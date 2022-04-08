@@ -1,8 +1,8 @@
 package shardmaster
 
 import (
-	"time"
-
+	"fmt"
+	"sort"
 	"umich.edu/eecs491/proj5/common"
 )
 
@@ -10,69 +10,57 @@ import (
 // Define what goes into "value" that Paxos is used to agree upon.
 // Field names must start with capital letters.
 //
-const (
-	Join int = iota + 10
-	Leave
-	Move
-	Query
-)
-
 type Op struct {
-	OpType  int
-	GID     int64
-	Servers []string
-	Shard   int
-	Num     int
+	Operation string
+	GID       int64
+	Servers   []string
+	ShardNum  int
+	ConfigNum int
+	Querynum  int
+}
+
+type GIDToShard struct {
+	GID    int64
+	Shards []int
+}
+
+type OrderedGIDToShard []GIDToShard
+
+func (o OrderedGIDToShard) Len() int {
+	return len(o)
+}
+func (o OrderedGIDToShard) Swap(i, j int) {
+	o[i], o[j] = o[j], o[i]
+}
+func (o OrderedGIDToShard) Less(i, j int) bool {
+	return o[i].GID < o[j].GID
 }
 
 //
 // Method used by PaxosRSM to determine if two Op values are identical
 //
+func equals(v1 interface{}, v2 interface{}) bool {
+	v11 := v1.(Op)
+	v22 := v2.(Op)
+	// TODO: After Op is well implemented.
+	if v11.Querynum == v22.Querynum && v11.Operation == v22.Operation && v11.GID == v22.GID && v11.ShardNum == v22.ShardNum && len(v11.Servers) == len(v22.Servers) {
 
-func equalhelper(server1 []string, server2 []string) bool {
-	// compare the server list
-	if server1 == nil && server2 == nil {
-		return true
-	}
-	if server1 == nil || server2 == nil {
+	} else {
 		return false
 	}
-	if len(server1) != len(server2) {
-		return false
-	}
-	map1 := make(map[string]int)
-	map2 := make(map[string]int)
-	for i := 0; i < len(server1); i++ {
-		map1[server1[i]] = 1
-		map2[server2[i]] = 1
-	}
-	for key := range map1 {
-		if _, ok := map2[key]; !ok {
+	for k, _ := range v11.Servers {
+		if v11.Servers[k] != v22.Servers[k] {
 			return false
 		}
 	}
 	return true
 }
 
-func equals(v1 interface{}, v2 interface{}) bool {
-	op1 := v1.(Op)
-	op2 := v2.(Op)
-	if op1.OpType == op2.OpType && op1.GID == op2.GID && op1.Num == op2.Num && op1.Shard == op2.Shard {
-		if equalhelper(op1.Servers, op2.Servers) {
-			return true
-		} else {
-			return false
-		}
-	}
-	return false
-}
-
 //
 // additions to ShardMaster state
 //
 type ShardMasterImpl struct {
-	curconfignum int
-	GID2Shard    map[int64]int // number of shards belongs to gid
+	ConfigNum int
 }
 
 //
@@ -81,271 +69,397 @@ type ShardMasterImpl struct {
 func (sm *ShardMaster) InitImpl() {
 	sm.mu.Lock()
 	defer sm.mu.Unlock()
-	sm.impl.curconfignum = 0
+	configZero := Config{Num: 0, Shards: [common.NShards]int64{}, Groups: make(map[int64][]string, 0)}
+	sm.configs = append(sm.configs, configZero)
 
-	// initialize the first config
-	sm.configs[0] = Config{0, [16]int64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, make(map[int64][]string)}
-	sm.impl.GID2Shard = make(map[int64]int)
-	sm.impl.GID2Shard[0] = 16
 }
 
 //
 // RPC handlers for Join, Leave, Move, and Query RPCs
 //
 func (sm *ShardMaster) Join(args *JoinArgs, reply *JoinReply) error {
-	sm.mu.Lock()
-	defer sm.mu.Unlock()
-	op := Op{Join, args.GID, args.Servers, -1, -1}
+	// As for join, we should first decide the mean of shards per server and the remainder.
+	// Then, we start our assignment with GID who has the largest number of shards. Put those extra shards into an idle pool.
+	// Finally, select shard from the idle pool and assign them to GIDs that have less shards.
+	newGID := args.GID
+	newServers := args.Servers
+	maxConfigNum := len(sm.configs) - 1
+	// if it is a new GID group, then we should do something. At this point, it is to add this operation to log.
+	op := Op{Operation: "Join", GID: newGID, Servers: newServers, ConfigNum: maxConfigNum}
 	sm.rsm.AddOp(op)
+
+	// 1. Add this GID into the list.
+
+	// 2. Reassign the shards to all GIDs in the GID map.
 	return nil
 }
 
 func (sm *ShardMaster) Leave(args *LeaveArgs, reply *LeaveReply) error {
-	sm.mu.Lock()
-	defer sm.mu.Unlock()
-	op := Op{Leave, args.GID, make([]string, 0), -1, -1}
+	// As for Leave, it is similar.
+	oldGID := args.GID
+	maxConfigNum := len(sm.configs) - 1
+	// if it is an old GID group, then we should do something. At this point, it is to add this operation to log.
+	op := Op{Operation: "Leave", GID: oldGID, ConfigNum: maxConfigNum}
 	sm.rsm.AddOp(op)
+
 	return nil
 }
 
 func (sm *ShardMaster) Move(args *MoveArgs, reply *MoveReply) error {
-	sm.mu.Lock()
-	defer sm.mu.Unlock()
-	op := Op{Move, args.GID, make([]string, 0), args.Shard, -1}
+
+	GID := args.GID
+	assignedShard := args.Shard
+	maxConfigNum := len(sm.configs) - 1
+	// 0. Check if this GID already added into the Shard Master.
+	_, ok := sm.configs[maxConfigNum].Groups[GID]
+	if !ok { // if already exists, then we should ignore this request.
+		fmt.Println("GID in Move cannot be found")
+		return nil
+	}
+	op := Op{Operation: "Move", GID: GID, ShardNum: assignedShard, ConfigNum: maxConfigNum}
 	sm.rsm.AddOp(op)
+
+	// 1. Add this GID into the list.
+
+	// 2. Reassign the shards to all GIDs in the GID map.
 	return nil
 }
 
 func (sm *ShardMaster) Query(args *QueryArgs, reply *QueryReply) error {
-	sm.mu.Lock()
-	defer sm.mu.Unlock()
-	op := Op{Query, -1, make([]string, 0), -1, args.Num}
+	queryNum := args.Num
+
+	op := Op{Operation: "Query", Querynum: queryNum}
 	sm.rsm.AddOp(op)
-	if args.Num == -1 || args.Num > sm.impl.curconfignum {
-		reply.Config = sm.configs[sm.impl.curconfignum]
-	} else {
-		reply.Config = sm.configs[args.Num]
+	if queryNum == -1 {
+		queryNum = len(sm.configs) - 1
 	}
+	reply.Config = sm.configs[queryNum]
 	return nil
-}
-
-func (sm *ShardMaster) Rebalance(shardassign [16]int64) [16]int64 {
-	// Rebalance the load of each server
-	if len(sm.impl.GID2Shard) <= 1 {
-		return shardassign
-	}
-	average := int(16 / (len(sm.impl.GID2Shard) - 1))
-	remain := 16 % (len(sm.impl.GID2Shard) - 1) // num of floor(average) + 1
-	more := make(chan int64, 20)
-	less := make(chan int64, 20)
-	counter := 0
-	lesscounter := 0
-
-	num := sm.impl.GID2Shard[0]
-	for i := 0; i < num; i++ {
-		more <- int64(0)
-		sm.impl.GID2Shard[0]--
-		counter++
-	}
-
-	// find where there are more shards than needed
-	for key, value := range sm.impl.GID2Shard {
-		if key == 0 {
-			continue
-		}
-		if remain > 0 {
-			if value >= average+1 {
-				for i := 0; i < value-average-1; i++ {
-					more <- key
-					sm.impl.GID2Shard[key]--
-					counter++
-				}
-				remain--
-			}
-		} else {
-			if value >= average {
-				for i := 0; i < value-average; i++ {
-					more <- key
-					sm.impl.GID2Shard[key]--
-					counter++
-				}
-			}
-		}
-	}
-
-	// find where there are less shards than needed
-	for key, value := range sm.impl.GID2Shard {
-		if key == 0 {
-			continue
-		}
-		if remain > 0 {
-			if value < average+1 {
-				for i := 0; i < average+1-value; i++ {
-					less <- key
-					sm.impl.GID2Shard[key]++
-					lesscounter++
-				}
-				remain--
-			}
-		} else {
-			if value <= average {
-				for i := 0; i < average-value; i++ {
-					less <- key
-					sm.impl.GID2Shard[key]++
-					lesscounter++
-				}
-			}
-		}
-	}
-
-	// reallcoate
-	for i := 0; i < counter; i++ {
-		movefrom := <-more
-		moveto := <-less
-		for j := 0; j < 16; j++ {
-			if shardassign[j] == movefrom {
-				shardassign[j] = moveto
-				break
-			}
-		}
-	}
-	return shardassign
 }
 
 //
 // Execute operation encoded in decided value v and update local state
 //
 func (sm *ShardMaster) ApplyOp(v interface{}) {
-	Val := v.(Op)
-	//add the unique number of this operation to local KVLog
-	newshardassign := [16]int64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-	newgroup := make(map[int64][]string)
-	if Val.OpType == Join {
-		curconfig := sm.configs[sm.impl.curconfignum]
-		if _, ok := sm.impl.GID2Shard[Val.GID]; ok {
-			// already join the config
-			sm.impl.curconfignum += 1
-			newshardassign = curconfig.Shards
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			newgroup[Val.GID] = Val.Servers
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
-		} else {
-			// update local state
-			sm.impl.curconfignum += 1
-			sm.impl.GID2Shard[Val.GID] = 0
-
-			newshardassign = sm.Rebalance(curconfig.Shards)
-
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			newgroup[Val.GID] = Val.Servers
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
+	// Here we are going to handle operations.
+	sm.mu.Lock()
+	defer sm.mu.Unlock()
+	op := v.(Op)
+	// First, lets consider Join
+	if op.Operation == "Join" {
+		// TODO: Do you need to judge whether this join is the latest configuration update? No, because when the join is being executed,
+		// TODO: it should always be the latest one. All old operations should already be handled in previous slots.
+		// 1. Add this GID into the list.
+		newGID := op.GID
+		newServers := op.Servers
+		maxConfigNum := len(sm.configs) - 1
+		// If this GID already exists, ignore the request.
+		_, ok := sm.configs[maxConfigNum].Groups[newGID]
+		if ok {
+			return
 		}
 
-		// part b inform related servers
-
-	} else if Val.OpType == Leave {
-		curconfig := sm.configs[sm.impl.curconfignum]
-		if _, ok := sm.impl.GID2Shard[Val.GID]; !ok {
-			// already leave the config
-			sm.impl.curconfignum += 1
-			newshardassign = curconfig.Shards
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
-		} else {
-			// update local state
-			sm.impl.curconfignum += 1
-			shardassign := curconfig.Shards
-			for i := 0; i < 16; i++ {
-				if shardassign[i] == Val.GID {
-					shardassign[i] = 0
-				}
-			}
-			sm.impl.GID2Shard[0] += sm.impl.GID2Shard[Val.GID]
-			delete(sm.impl.GID2Shard, Val.GID)
-
-			newshardassign = sm.Rebalance(shardassign)
-
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			delete(newgroup, Val.GID)
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
+		newConfig := Config{Num: maxConfigNum + 1, Shards: [common.NShards]int64{}, Groups: make(map[int64][]string, 0)}
+		for k, val := range sm.configs[maxConfigNum].Shards {
+			newConfig.Shards[k] = val
 		}
-
-	} else if Val.OpType == Move {
-		curconfig := sm.configs[sm.impl.curconfignum]
-		if curconfig.Shards[Val.Shard] == Val.GID {
-			// already in charge
-			sm.impl.curconfignum += 1
-			newshardassign = curconfig.Shards
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
-		} else {
-			// update local state
-			sm.impl.curconfignum += 1
-			shardassign := curconfig.Shards
-			sm.impl.GID2Shard[shardassign[Val.Shard]] -= 1
-			shardassign[Val.Shard] = Val.GID
-			sm.impl.GID2Shard[Val.GID] += 1
-
-			for key, value := range curconfig.Groups {
-				newgroup[key] = value
-			}
-			newshardassign = shardassign
-			newconfig := Config{sm.impl.curconfignum, newshardassign, newgroup}
-			sm.configs = append(sm.configs, newconfig)
+		for k, val := range sm.configs[maxConfigNum].Groups {
+			newConfig.Groups[k] = val
 		}
-	}
+		// Add GID into the config.
+		newConfig.Groups[newGID] = newServers
 
-	// part b inform related servers
-	if Val.OpType != Query {
-		// inform all current groups
-		for key := range sm.configs[sm.impl.curconfignum].Groups {
-			for {
-				if len(sm.configs[sm.impl.curconfignum].Groups[key]) == 0 {
+		// 2. Reassign the shards to all GIDs in the GID map.
+		// As for join, we should first decide the mean of shards per server and the remainder.
+		// Then, we start our assignment with GID who has the largest number of shards. Put those extra shards into an idle pool.
+		// Finally, select shard from the idle pool and assign them to GIDs that have less shards.
+		GIDNum := len(newConfig.Groups)
+		mean := common.NShards / GIDNum
+		remainder := common.NShards % GIDNum
+		orderGIDToShard := make([]GIDToShard, 0)
+		// Initialize
+		GIDtoShard := make(map[int64][]int, 0)
+		for k, _ := range newConfig.Groups {
+			GIDtoShard[k] = make([]int, 0)
+			orderGIDToShard = append(orderGIDToShard, GIDToShard{GID: k, Shards: make([]int, 0)})
+		}
+		// This is a pool for storing extra shards.
+		shardsPool := make([]int, 0)
+		remainderCnt := remainder
+		for k, val := range newConfig.Shards {
+			// if it is the initialization case, GID = 0, then add it to the pool
+			if val == 0 {
+				shardsPool = append(shardsPool, k)
+				continue
+			}
+			GIDtoShard[val] = append(GIDtoShard[val], k)
+			// assign shard to gid for order
+			for kk, gts := range orderGIDToShard {
+				if gts.GID == val {
+					orderGIDToShard[kk].Shards = append(orderGIDToShard[kk].Shards, k)
 					break
 				}
-				index := int(common.Nrand()) % len(sm.configs[sm.impl.curconfignum].Groups[key])
-				args := &common.UpdateArgs{Unum: common.Nrand(), NewShardAssign: newshardassign, Allgroups: newgroup, Curconfignum: sm.impl.curconfignum}
-				reply := common.UpdateReply{Err: ""}
-				ok := common.Call(sm.configs[sm.impl.curconfignum].Groups[key][index], "ShardKV.UpdateConfig", args, &reply)
-				if ok {
-					break
-				} else {
-					time.Sleep(100 * time.Millisecond)
-				}
+			}
+		}
+		// Sort the slice
+		sort.Sort(OrderedGIDToShard(orderGIDToShard))
+
+		/*for k, val := range GIDtoShard {
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+			}
+			// If this GID has too many shards to handle
+			tooMuch := len(val) - limit
+			if tooMuch > 0 {
+				shardsPool = append(shardsPool, val[:tooMuch]...)
+				GIDtoShard[k] = append(val[:0], val[tooMuch:]...)
+				tooMuch = 0
+			}
+			if tooMuch == 0 && limit > mean {
+				remainderCnt -= 1
+			}
+		}*/
+		for k, val := range orderGIDToShard {
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+			}
+			// If this GID has too many shards to handle
+			tooMuch := len(val.Shards) - limit
+			if tooMuch > 0 {
+				shardsPool = append(shardsPool, val.Shards[:tooMuch]...)
+				orderGIDToShard[k].Shards = append(val.Shards[:0], val.Shards[tooMuch:]...)
+				tooMuch = 0
+			}
+			if tooMuch == 0 && limit > mean {
+				remainderCnt -= 1
 			}
 		}
 
-		// inform the leave group
-		if Val.OpType == Leave {
-			for {
-				if servers, ok := sm.configs[sm.impl.curconfignum-1].Groups[Val.GID]; !ok || len(servers) == 0 {
+		// Get shards from pool to assign them to those with little shards
+		// remainderCnt = remainder
+		/*for k, val := range GIDtoShard {
+			if len(val) == mean+1 {
+				continue
+			}
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+				remainderCnt -= 1
+			}
+			// If this GID has too many shards to handle
+			tooLess := limit - len(val)
+			if tooLess > 0 {
+				GIDtoShard[k] = append(val[:0], shardsPool[:tooLess]...)
+				shardsPool = append(shardsPool[:0], shardsPool[tooLess:]...)
+			}
+		}*/
+		for k, val := range orderGIDToShard {
+			if len(val.Shards) == mean+1 {
+				continue
+			}
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+				remainderCnt -= 1
+			}
+			// If this GID has too many shards to handle
+			tooLess := limit - len(val.Shards)
+			if tooLess > 0 {
+				orderGIDToShard[k].Shards = append(val.Shards[:0], shardsPool[:tooLess]...)
+				shardsPool = append(shardsPool[:0], shardsPool[tooLess:]...)
+			}
+		}
+
+		fmt.Println(GIDtoShard, orderGIDToShard)
+		// Now assign the shards.
+		/*for k, val := range GIDtoShard {
+			for _, shardN := range val {
+				newConfig.Shards[shardN] = k
+			}
+		}*/
+		for _, val := range orderGIDToShard {
+			for _, shardN := range val.Shards {
+				newConfig.Shards[shardN] = val.GID
+			}
+		}
+
+		sm.configs = append(sm.configs, newConfig)
+		fmt.Println("Join: new config finish", newConfig)
+	} else if op.Operation == "Leave" {
+		leaveGID := op.GID
+		maxConfigNum := len(sm.configs) - 1
+		// If this GID already left, ignore the request.
+		_, ok := sm.configs[maxConfigNum].Groups[leaveGID]
+		if !ok {
+			return
+		}
+
+		newConfig := Config{Num: maxConfigNum + 1, Shards: [common.NShards]int64{}, Groups: make(map[int64][]string, 0)}
+		for k, val := range sm.configs[maxConfigNum].Shards {
+			newConfig.Shards[k] = val
+		}
+		for k, val := range sm.configs[maxConfigNum].Groups {
+			newConfig.Groups[k] = val
+		}
+		// delete GID into the config.
+		fmt.Println(len(newConfig.Groups))
+		delete(newConfig.Groups, leaveGID)
+		fmt.Println(len(newConfig.Groups))
+
+		// 2. Reassign the shards to all GIDs in the GID map.
+		// As for join, we should first decide the mean of shards per server and the remainder.
+		// Then, we start our assignment with GID who has the largest number of shards. Put those extra shards into an idle pool.
+		// Finally, select shard from the idle pool and assign them to GIDs that have less shards.
+		GIDNum := len(newConfig.Groups)
+		mean := common.NShards / GIDNum
+		remainder := common.NShards % GIDNum
+		orderGIDToShard := make([]GIDToShard, 0)
+		// Initialize
+		GIDtoShard := make(map[int64][]int, 0)
+		for k, _ := range newConfig.Groups {
+			GIDtoShard[k] = make([]int, 0)
+			orderGIDToShard = append(orderGIDToShard, GIDToShard{GID: k, Shards: make([]int, 0)})
+		}
+		/*for k, _ := range newConfig.Groups {
+			GIDtoShard[k] = make([]int, 0)
+		}*/
+		shardsPool := make([]int, 0)
+		remainderCnt := remainder
+		for k, val := range newConfig.Shards {
+			// if it is the initialization case, GID = 0, then add it to the pool
+			if val == leaveGID {
+				shardsPool = append(shardsPool, k)
+				continue
+			}
+			GIDtoShard[val] = append(GIDtoShard[val], k)
+			// assign shard to gid for order
+			for kk, gts := range orderGIDToShard {
+				if gts.GID == val {
+					orderGIDToShard[kk].Shards = append(orderGIDToShard[kk].Shards, k)
 					break
-				}
-				index := int(common.Nrand()) % len(sm.configs[sm.impl.curconfignum-1].Groups[Val.GID])
-				args := &common.UpdateArgs{Unum: common.Nrand(), NewShardAssign: newshardassign, Allgroups: newgroup, Curconfignum: sm.impl.curconfignum}
-				reply := common.UpdateReply{Err: ""}
-				ok := common.Call(sm.configs[sm.impl.curconfignum-1].Groups[Val.GID][index], "ShardKV.UpdateConfig", args, &reply)
-				if ok {
-					break
-				} else {
-					time.Sleep(100 * time.Millisecond)
 				}
 			}
 		}
+		// Sort the slice
+		sort.Sort(OrderedGIDToShard(orderGIDToShard))
+
+		/*for k, val := range newConfig.Shards {
+			// If this shard belongs to left GID, then add it to the pool
+			if val == leaveGID {
+				shardsPool = append(shardsPool, k)
+				continue
+			}
+			GIDtoShard[val] = append(GIDtoShard[val], k)
+		}*/
+
+		/*for k, val := range GIDtoShard {
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+			}
+			// If this GID has too many shards to handle
+			tooMuch := len(val) - limit
+			if tooMuch > 0 {
+				shardsPool = append(shardsPool, val[:tooMuch]...)
+				GIDtoShard[k] = append(val[:0], val[tooMuch:]...)
+				tooMuch = 0
+			}
+			if tooMuch == 0 && limit > mean {
+				remainderCnt -= 1
+			}
+		}*/
+
+		for k, val := range orderGIDToShard {
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+			}
+			// If this GID has too many shards to handle
+			tooMuch := len(val.Shards) - limit
+			if tooMuch > 0 {
+				shardsPool = append(shardsPool, val.Shards[:tooMuch]...)
+				orderGIDToShard[k].Shards = append(val.Shards[:0], val.Shards[tooMuch:]...)
+				tooMuch = 0
+			}
+			if tooMuch == 0 && limit > mean {
+				remainderCnt -= 1
+			}
+		}
+		// Get shards from pool to assign them to those with little shards
+		// remainderCnt = remainder
+		/*for k, val := range GIDtoShard {
+			if len(val) == mean+1 {
+				continue
+			}
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+				remainderCnt -= 1
+			}
+			// If this GID has too many shards to handle
+			tooLess := limit - len(val)
+			if tooLess > 0 {
+				GIDtoShard[k] = append(val[:0], shardsPool[:tooLess]...)
+				shardsPool = append(shardsPool[:0], shardsPool[tooLess:]...)
+			}
+		}*/
+		for k, val := range orderGIDToShard {
+			if len(val.Shards) == mean+1 {
+				continue
+			}
+			limit := mean
+			if remainderCnt > 0 {
+				limit += 1
+				remainderCnt -= 1
+			}
+			// If this GID has too many shards to handle
+			tooLess := limit - len(val.Shards)
+			if tooLess > 0 {
+				orderGIDToShard[k].Shards = append(val.Shards[:0], shardsPool[:tooLess]...)
+				shardsPool = append(shardsPool[:0], shardsPool[tooLess:]...)
+			}
+		}
+
+		// Now assign the shards.
+		/*for k, val := range GIDtoShard {
+			for _, shardN := range val {
+				newConfig.Shards[shardN] = k
+			}
+		}*/
+		for _, val := range orderGIDToShard {
+			for _, shardN := range val.Shards {
+				newConfig.Shards[shardN] = val.GID
+			}
+		}
+
+		sm.configs = append(sm.configs, newConfig)
+		fmt.Println("Leave: new config finish", newConfig)
+	} else if op.Operation == "Move" {
+		GID := op.GID
+		assignedShard := op.ShardNum
+		maxConfigNum := len(sm.configs) - 1
+		_, ok := sm.configs[maxConfigNum].Groups[GID]
+		// if the GID is not existing, return
+		if !ok {
+			fmt.Println("Move: the GID doesn't exist", GID, assignedShard)
+		}
+		// Else, assign.
+		newConfig := Config{Num: maxConfigNum + 1, Shards: [common.NShards]int64{}, Groups: make(map[int64][]string, 0)}
+		for k, val := range sm.configs[maxConfigNum].Shards {
+			newConfig.Shards[k] = val
+		}
+		for k, val := range sm.configs[maxConfigNum].Groups {
+			newConfig.Groups[k] = val
+		}
+		newConfig.Shards[assignedShard] = GID
+
+		sm.configs = append(sm.configs, newConfig)
+		fmt.Println("Move: new config finish", newConfig)
+	} else {
+		// It is Query.
+		// Nothing happens
+
 	}
 }
