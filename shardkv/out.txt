@@ -1,0 +1,436 @@
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Rebalance" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Rebalance" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Rebalance" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:23 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:23 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "ApplyOp" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "InitImpl" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Setunreliable" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Done" has 2 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "GetDoneValue" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Kill" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Max" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: method "Min" has 1 input parameters; needs exactly three
+2022/03/29 16:18:24 rpc.Register: reply type of method "Start" is not a pointer: "interface {}"
+2022/03/29 16:18:24 rpc.Register: method "Status" has 2 input parameters; needs exactly three
+Test: Shards really move ...
+##################
+shardassign: 
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+Allgroups: 
+map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]]
+Calling  /var/tmp/824-1000/skv-12761-moves-0  to update config
+in update config  0 [100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+now I'm apply reconfig [100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]]
+wogengxinwanla
+map[]
+ck.join called
+join op 100 [/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+I'm applying Op
+now I'm apply reconfig [100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+I'm applying Op
+now I'm apply reconfig [100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-0
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-0
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-1
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-2
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-0
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+hahahaha ok
+now in putappend
+[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2]
+send  Put  to  /var/tmp/824-1000/skv-12761-moves-0
+[100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100]
+I'm applying Op
+hahahaha ok
+##################
+shardassign: 
+[101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100]
+Allgroups: 
+map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+Calling  /var/tmp/824-1000/skv-12761-moves-1  to update config
+in update config  1 [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+wogengxinwanla
+map[101:[0 1 2 3 4 5 6 7]]
+Passing map after updateconfig to  /var/tmp/824-1000/skv-12761-moves-4
+KvMAP 
+map[1066190175777905022:6437942337796213428 1137297526334633461:2494917394818134997 1874280992857045262:3302763789468585935 277691315561358028:5503900212321050643 3839712178315844993:3946198567489487373 4805240507421806156:1985903217837042483 5280936303020405566:5361982480855825959 5906460505131771314:5468794977063309469 6577330246317608318:299236359625503578 6919898127766286377:6001008226571502326 7026346895487581407:4776227154371683523 7383688710854857041:2922963675928667297]
+OpMAP 
+map[0:map[518713094159009558:true 2543454023066381834:true] 1:map[772960566377201990:true] 2:map[1884673996906923685:true] 3:map[] 4:map[103071483831905732:true] 5:map[1441048606939708120:true 1636511859883546260:true 2363787151788191497:true 3908438979429232979:true 3977307465111500833:true] 6:map[643144864935654433:true 1367431151533852992:true] 7:map[]]
+I'm applying Op
+Iknow it has been done
+Calling  /var/tmp/824-1000/skv-12761-moves-4  to update config
+in update config  1 [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100]
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+wogengxinwanla
+map[]
+ck.join called
+join op 101 [/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-1
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-1
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-1
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-0
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-2
+I'm applying Op
+I'm applying Op
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-5
+I'm applying Op
+I'm applying Op
+now I'm apply reconfig [101 101 101 101 101 101 101 101 100 100 100 100 100 100 100 100] map[100:[/var/tmp/824-1000/skv-12761-moves-0 /var/tmp/824-1000/skv-12761-moves-1 /var/tmp/824-1000/skv-12761-moves-2] 101:[/var/tmp/824-1000/skv-12761-moves-3 /var/tmp/824-1000/skv-12761-moves-4 /var/tmp/824-1000/skv-12761-moves-5]]
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-0
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-5
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-5
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-4
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-5
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-2
+I'm applying Op
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-2
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+donedone
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+donedone
+this part finish
+port  /var/tmp/824-1000/skv-12761-moves-0
+port  /var/tmp/824-1000/skv-12761-moves-1
+port  /var/tmp/824-1000/skv-12761-moves-2
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-4
+I'm applying Op
+I'm applying Op
+I'm applying Op
+I'm applying Op
+send  GET  to  /var/tmp/824-1000/skv-12761-moves-3
+I'm applying Op
+I'm applying Op
+donedone
